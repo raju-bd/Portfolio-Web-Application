@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel Portfolio - Professional Portfolio Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8f9fa;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+            color: white;
+            margin-top: 60px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            bottom: -50px;
+            right: -50px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(30px);
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Features Section */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            animation: slideUp 0.6s ease-out backwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-size: 1.25rem;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 4rem 2rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .tech-logo {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item h4 {
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        /* Installation Section */
+        .installation {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem;
+        }
+
+        .installation-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .installation .section-title {
+            color: white;
+        }
+
+        .steps {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .step:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Accordion */
+        .accordion {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .accordion-header {
+            padding: 1.5rem;
+            background: var(--light);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .accordion-header:hover {
+            background: #f0f1f3;
+        }
+
+        .accordion-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+
+        .accordion.active .accordion-toggle {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 1.5rem;
+        }
+
+        .accordion.active .accordion-content {
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+
+        .accordion-content p {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .accordion-content li {
+            padding: 0.5rem 0;
+            color: var(--gray);
+        }
+
+        .accordion-content li::before {
+            content: '✓ ';
+            color: var(--success);
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .code-block code {
+            line-height: 1.6;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--gray);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Features List */
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .feature-item::before {
+            content: '✨';
+            font-size: 1.5rem;
+        }
+
+        .feature-item h4 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .feature-item p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 1rem;
+            transition: all 0.3s;
+            animation: slideUp 0.6s ease-out backwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 600px;
+            max-height: 80vh;
+            border-radius: 1rem;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .feature-card {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Scroll Animation */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🚀 Laravel Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#tech-stack">Tech Stack</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#documentation">Docs</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <button class="btn btn-primary" onclick="openModal('demo-modal')">Live Demo</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Professional Portfolio Management System</h1>
+            <p>Built with Laravel 11 | Modern Admin Dashboard | Production Ready</p>
+            <div class="cta-buttons">
+                <button class="btn btn-secondary" onclick="scrollTo('features')">Explore Features</button>
+                <button class="btn btn-outline" onclick="scrollTo('installation')">Get Started</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <h2 class="section-title">✨ Powerful Features</h2>
+        <p class="section-subtitle">Everything you need to showcase your professional portfolio</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Admin Dashboard</h3>
+                <p>Complete control center to manage all your portfolio content with real-time statistics and analytics.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Responsive Design</h3>
+                <p>Beautiful, mobile-first design that looks perfect on all devices from mobile to desktop.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌙</div>
+                <h3>Dark Mode</h3>
+                <p>Automatic dark mode support with smooth theme switching and user preference persistence.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure Authentication</h3>
+                <p>Built-in Laravel authentication with role-based access control and password hashing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Blog Management</h3>
+                <p>Full-featured blog system with categories, tags, comments, and rich text editing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <h3>Gallery System</h3>
+                <p>Image management with lazy loading, lightbox viewer, and automatic optimization.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📧</div>
+                <h3>Contact Forms</h3>
+                <p>Contact management system with email notifications and message tracking.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Optimized performance with caching, lazy loading, and efficient database queries.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>SEO Optimized</h3>
+                <p>Built-in SEO best practices including meta tags, sitemaps, and structured data.</p>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Eloquent Models</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">30+</div>
+                <div class="stat-label">Blade Templates</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Database Seeders</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="tech-stack" id="tech-stack">
+        <h2 class="section-title">🛠️ Modern Tech Stack</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <div class="tech-logo">🐘</div>
+                <h4>Laravel 11</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-logo">🐘</div>
+                <h4>PHP 8.2+</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-logo">🗄️</div>
+                <h4>MySQL 5.7+</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-logo">🎨</div>
+                <h4>Blade Templates</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-logo">✨</div>
+                <h4>Alpine.js</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-logo">🎭</div>
+                <h4>CSS3 Animations</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-logo">📦</div>
+                <h4>Composer</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-logo">🔧</div>
+                <h4>Artisan CLI</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="installation" id="installation">
+        <div class="installation-content">
+            <h2 class="section-title">🚀 Quick Start Guide</h2>
+            <p class="section-subtitle" style="color: rgba(255, 255, 255, 0.8);">Get up and running in minutes</p>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'requirements')">Requirements</button>
+                <button class="tab-btn" onclick="switchTab(event, 'installation')">Installation</button>
+                <button class="tab-btn" onclick="switchTab(event, 'setup')">Setup</button>
+                <button class="tab-btn" onclick="switchTab(event, 'deploy')">Deployment</button>
+            </div>
+
+            <div id="requirements" class="tab-content active">
+                <h3 style="margin-bottom: 1.5rem;">System Requirements</h3>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <h4>PHP 8.2 or Higher</h4>
+                        <p>Required for Laravel 11 framework and modern PHP features</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>MySQL 5.7+</h4>
+                        <p>Database server for storing all project data</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Composer</h4>
+                        <p>PHP dependency manager for package installation</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Node.js (Optional)</h4>
+                        <p>For asset compilation if using Vite or Mix</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="installation" class="tab-content">
+                <h3 style="margin-bottom: 1.5rem;">Installation Steps</h3>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Clone Repository</h4>
+                            <p>Get the project code from your repository</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Install Dependencies</h4>
+                            <p>Run <code>composer install</code> to install PHP packages</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Configure Environment</h4>
+                            <p>Copy .env.example to .env and set your database credentials</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Generate App Key</h4>
+                            <p>Run <code>php artisan key:generate</code></p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Migrate & Seed Database</h4>
+                            <p>Run <code>php artisan migrate --seed</code></p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Start Development Server</h4>
+                            <p>Run <code>php artisan serve</code> and visit http://localhost:8000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="setup" class="tab-content">
+                <h3 style="margin-bottom: 1.5rem;">Environment Setup</h3>
+                <h4>Key Configuration Files:</h4>
+                <div class="code-block"><code>.env file structure:
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=portfolio
+DB_USERNAME=root
+DB_PASSWORD=
+
+APP_NAME="Laravel Portfolio"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000</code></div>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <h4>Database Connection</h4>
+                        <p>Configure MySQL connection in .env file</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Application URL</h4>
+                        <p>Set APP_URL to your deployment URL</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Mail Configuration</h4>
+                        <p>Configure mail drivers for notifications</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>File Permissions</h4>
+                        <p>Set storage/ and bootstrap/cache/ to writable</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="deploy" class="tab-content">
+                <h3 style="margin-bottom: 1.5rem;">Deployment Checklist</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Set APP_ENV=production in .env</li>
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Set APP_DEBUG=false in .env</li>
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Run composer install --no-dev</li>
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Run php artisan config:cache</li>
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Run php artisan route:cache</li>
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Set proper file permissions</li>
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Configure SSL certificate</li>
+                    <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.8);">✓ Set up automated backups</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Section -->
+    <section class="section" id="documentation">
+        <h2 class="section-title">📚 Complete Documentation</h2>
+        <p class="section-subtitle">Everything you need to know about the system</p>
+
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>📦 Project Structure Overview</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Application Directory (app/):</strong></p>
+                    <ul>
+                        <li><strong>Models/</strong> - 12 Eloquent models representing database tables</li>
+                        <li><strong>Http/Controllers/</strong> - Public routes and admin controllers</li>
+                        <li><strong>Http/Middleware/</strong> - Custom middleware for auth and maintenance</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Database Directory (database/):</strong></p>
+                    <ul>
+                        <li><strong>migrations/</strong> - 12 database migration files</li>
+                        <li><strong>seeders/</strong> - 10 data seeder files with sample data</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Resources Directory (resources/):</strong></p>
+                    <ul>
+                        <li><strong>views/</strong> - 30+ Blade templates organized by function</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🗄️ Database Schema</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Core Tables:</strong></p>
+                    <ul>
+                        <li><strong>users</strong> - Admin authentication and user management</li>
+                        <li><strong>skills</strong> - Technical skills with proficiency levels</li>
+                        <li><strong>projects</strong> - Portfolio projects with descriptions</li>
+                        <li><strong>services</strong> - Services offered with details</li>
+                        <li><strong>galleries</strong> - Image management for galleries</li>
+                        <li><strong>blog_posts</strong> - Blog content and articles</li>
+                        <li><strong>contact_messages</strong> - Contact form submissions</li>
+                        <li><strong>success_stories</strong> - Case studies and achievements</li>
+                        <li><strong>certifications</strong> - Professional certifications</li>
+                        <li><strong>counters</strong> - Homepage statistics</li>
+                        <li><strong>site_settings</strong> - Global configuration values</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🎯 Key Features</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Frontend Features:</strong></p>
+                    <ul>
+                        <li>Responsive design with mobile-first approach</li>
+                        <li>Dark mode support with automatic detection</li>
+                        <li>Smooth animations and transitions</li>
+                        <li>Lazy loading for images</li>
+                        <li>Contact form with validation</li>
+                        <li>Blog with category filtering</li>
+                        <li>Portfolio gallery with lightbox</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Admin Features:</strong></p>
+                    <ul>
+                        <li>Complete CRUD operations for all content types</li>
+                        <li>Dashboard with statistics and overview</li>
+                        <li>User authentication with role-based access</li>
+                        <li>Contact message management</li>
+                        <li>Maintenance mode control</li>
+                        <li>Site settings configuration</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🔐 Security</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Built-in Security Features:</strong></p>
+                    <ul>
+                        <li>Laravel's built-in CSRF protection</li>
+                        <li>Password hashing with bcrypt</li>
+                        <li>Role-based access control (RBAC)</li>
+                        <li>SQL injection prevention via ORM</li>
+                        <li>XSS protection with Blade escaping</li>
+                        <li>CORS configuration for API security</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Default Login Credentials:</strong></p>
+                    <ul>
+                        <li><strong>Email:</strong> admin@portfolio.com</li>
+                        <li><strong>Password:</strong> admin123</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🎨 Customization Guide</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>CSS Customization:</strong></p>
+                    <ul>
+                        <li>Main stylesheet: public/css/app.css</li>
+                        <li>CSS variables defined for easy theme customization</li>
+                        <li>Dark mode overrides in public/css/dark-mode.css</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Template Customization:</strong></p>
+                    <ul>
+                        <li>All templates use Blade syntax</li>
+                        <li>Master layouts in resources/views/layouts</li>
+                        <li>Component-based architecture for reusability</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🐛 Troubleshooting</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Common Issues & Solutions:</strong></p>
+                    <ul>
+                        <li><strong>Laravel not found:</strong> Run <code>composer install</code></li>
+                        <li><strong>Database connection error:</strong> Check .env DB credentials</li>
+                        <li><strong>Permission denied on storage:</strong> Run <code>chmod -R 775 storage bootstrap/cache</code></li>
+                        <li><strong>Port 8000 in use:</strong> Use <code>php artisan serve --port=8001</code></li>
+                        <li><strong>No tables in database:</strong> Run <code>php artisan migrate --seed</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" id="faq" style="background: var(--light);">
+        <h2 class="section-title">❓ Frequently Asked Questions</h2>
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Can I use this on shared hosting?</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    Yes! As long as your hosting supports PHP 8.2+, MySQL, and Composer, you can use this application. Make sure the hosting provider allows SSH access for easier deployment.
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Is the database backed up?</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    Database backups are not automatic by default. We recommend setting up a cron job or using your hosting provider's backup tools. You can manually backup using: <code>mysqldump -u username -p database_name > backup.sql</code>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>How can I change the admin password?</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    Log in to admin panel and use the built-in password change functionality. Or use: <code>php artisan tinker</code> then <code>User::first()->update(['password' => Hash::make('newpassword')])</code>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Can I add more admin users?</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    Yes! You can add more admin users directly through the admin panel or use the seeder. Create a new seeder or use: <code>User::create(['name' => 'Name', 'email' => 'email@example.com', 'password' => Hash::make('password')])</code>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>How do I change the primary color?</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    All colors are defined as CSS variables in public/css/app.css. Look for the :root section and modify the --primary, --secondary, and other color variables to match your brand.
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Is SEO optimization included?</span>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    Yes! The application includes SEO best practices like meta tags, structured data, sitemap support, and semantic HTML. You can further optimize by configuring meta tags in each controller.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section" style="text-align: center;">
+        <h2 class="section-title">Ready to Launch Your Portfolio?</h2>
+        <p class="section-subtitle">Get started in minutes with our complete, production-ready solution</p>
+        <div class="cta-buttons" style="justify-content: center;">
+            <button class="btn btn-primary" onclick="scrollTo('installation')">View Installation Guide</button>
+            <button class="btn btn-outline" onclick="openModal('demo-modal')">See Live Demo</button>
+        </div>
+    </section>
+
+    <!-- Demo Modal -->
+    <div class="modal" id="demo-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Live Demo Access</h2>
+                <button class="modal-close" onclick="closeModal('demo-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <h3 style="margin-bottom: 1rem;">Admin Dashboard</h3>
+                <p style="color: var(--gray); margin-bottom: 1rem;">Access the complete admin panel to manage all portfolio content:</p>
+                
+                <div style="background: var(--light); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                    <p><strong>Frontend URL:</strong> http://localhost:8000</p>
+                    <p><strong>Admin URL:</strong> http://localhost:8000/admin</p>
+                    <p style="margin-top: 1rem;"><strong>Email:</strong> admin@portfolio.com</p>
+                    <p><strong>Password:</strong> admin123</p>
+                </div>
+
+                <h3 style="margin-bottom: 1rem;">Admin Features</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.5rem 0;">✓ Dashboard with statistics</li>
+                    <li style="padding: 0.5rem 0;">✓ Skills management</li>
+                    <li style="padding: 0.5rem 0;">✓ Project portfolio management</li>
+                    <li style="padding: 0.5rem 0;">✓ Service descriptions</li>
+                    <li style="padding: 0.5rem 0;">✓ Blog management with categories</li>
+                    <li style="padding: 0.5rem 0;">✓ Gallery management</li>
+                    <li style="padding: 0.5rem 0;">✓ Contact message inbox</li>
+                    <li style="padding: 0.5rem 0;">✓ Success stories management</li>
+                    <li style="padding: 0.5rem 0;">✓ Certifications</li>
+                    <li style="padding: 0.5rem 0;">✓ Site settings configuration</li>
+                </ul>
+
+                <p style="color: var(--gray); margin-top: 1.5rem; font-size: 0.9rem;">After installation with <code>php artisan migrate --seed</code>, these credentials will be available.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3 style="margin-bottom: 1.5rem; color: white;">Laravel Portfolio System</h3>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#tech-stack">Tech Stack</a>
+                <a href="#installation">Installation</a>
+                <a href="#documentation">Documentation</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <div class="footer-divider"></div>
+            <p style="color: var(--gray); font-size: 0.9rem;">Built with ❤️ using Laravel 11 | © 2026 Professional Portfolio System</p>
+            <p style="color: var(--gray); font-size: 0.85rem; margin-top: 0.5rem;">Fully responsive, production-ready, and easy to customize</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        function scrollTo(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Tab switching
+        function switchTab(event, tabId) {
+            const buttons = event.target.parentElement.querySelectorAll('.tab-btn');
+            const contents = event.target.parentElement.nextElementSibling;
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const tabContents = event.target.closest('.installation-content').querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Accordion toggle
+        function toggleAccordion(header) {
+            const accordion = header.parentElement;
+            accordion.classList.toggle('active');
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        });
+
+        // Scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .stat-card').forEach(el => {
+            el.classList.add('scroll-reveal');
+            observer.observe(el);
+        });
+
+        // Animated counter
+        function animateCounter(element, target, duration = 2000) {
+            let current = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Start counter animation when stats are visible
+        const statObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const number = entry.target.querySelector('.stat-number');
+                    const target = parseInt(number.textContent.replace(/\D/g, ''));
+                    animateCounter(number, target);
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statObserver.observe(card);
+        });
+    </script>
+</body>
+</html>
