@@ -1,0 +1,5 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="300" fill="#fef3c7"/>
+  <circle cx="150" cy="120" r="40" fill="#f59e0b"/>
+  <text x="150" y="240" font-size="16" fill="#d97706" text-anchor="middle" font-weight="bold">Office Environment</text>
+</svg>

@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Laravel Artisan Command Line Interface
+|--------------------------------------------------------------------------
+|
+| This script provides the entry point for running Artisan commands
+| that interact with this Laravel application.
+|
+*/
+
+define('LARAVEL_START', microtime(true));
+
+$status = 0;
+
+try {
+    require __DIR__.'/vendor/autoload.php';
+
+    $app = require_once __DIR__.'/bootstrap/app.php';
+
+    $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+    $status = $kernel->handle($input = new Symfony\Component\Console\Input\ArgvInput, new Symfony\Component\Console\Output\ConsoleOutput);
+} catch (Exception $e) {
+    $lines = [
+        '<fg=white;bg=red> ERROR </> <fg=white>'.$e->getMessage().'</>',
+        '',
+    ];
+
+    foreach ($lines as $line) {
+        fwrite(STDERR, $line.PHP_EOL);
+    }
+
+    $status = 1;
+} finally {
+    exit($status);
+}

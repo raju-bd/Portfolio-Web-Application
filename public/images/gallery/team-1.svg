@@ -1,0 +1,5 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="300" fill="#e0e7ff"/>
+  <circle cx="150" cy="120" r="40" fill="#6366f1"/>
+  <text x="150" y="240" font-size="16" fill="#4f46e5" text-anchor="middle" font-weight="bold">Team Meeting</text>
+</svg>

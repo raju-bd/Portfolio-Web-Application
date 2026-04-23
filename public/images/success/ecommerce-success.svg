@@ -1,0 +1,6 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fef3c7"/>
+  <text x="200" y="100" font-size="28" fill="#d97706" text-anchor="middle" font-weight="bold">📈 +40%</text>
+  <text x="200" y="160" font-size="16" fill="#78350f" text-anchor="middle">Revenue Increase</text>
+  <text x="200" y="240" font-size="12" fill="#92400e" text-anchor="middle">E-Commerce Platform Success</text>
+</svg>
